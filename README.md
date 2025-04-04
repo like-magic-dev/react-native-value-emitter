@@ -10,13 +10,19 @@ npm install react-native-value-emitter
 
 ## Usage
 
-
 ```js
-import { multiply } from 'react-native-value-emitter';
+import { StateValueEmitter, ValueEmitter, useValueEmitter, } from 'react-native-value-emitter';
 
-// ...
+// Create a value emitter with or without state
+const valueEmitter = new ValueEmitter<number>();
+const valueEmitter = new StateValueEmitter<number>(1);
 
-const result = await multiply(3, 7);
+// Listen to the value emitter
+const [value, setValue] = useState<number>();
+
+useValueEmitter((v) => {
+  setValue(v);
+}, valueEmitter);
 ```
 
 
