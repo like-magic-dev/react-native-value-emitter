@@ -1,6 +1,6 @@
 {
   "name": "react-native-value-emitter",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Value emitters with or without state.",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
