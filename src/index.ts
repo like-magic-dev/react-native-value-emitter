@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import EventEmitter, {
   type EmitterSubscription,
 } from 'react-native/Libraries/vendor/emitter/EventEmitter';
@@ -27,7 +28,7 @@ export class ValueEmitter<T> extends EventEmitter {
 }
 
 export class StateValueEmitter<T> extends ValueEmitter<T> {
-  constructor(initialValue: T | undefined = undefined) {
+  constructor(initialValue: T) {
     super();
     this.value = initialValue;
   }
@@ -37,17 +38,27 @@ export class StateValueEmitter<T> extends ValueEmitter<T> {
     super.add(v);
   }
 
-  value: T | undefined;
+  value: T;
 
   map: <U>(mapping: (v: T) => U) => StateValueEmitter<U> = <U>(
     mapping: (v: T) => U
   ) => {
-    const emitter = new StateValueEmitter<U>(
-      this.value !== undefined ? mapping(this.value) : undefined
-    );
+    const emitter = new StateValueEmitter<U>(mapping(this.value));
     this.onValue((v) => {
       emitter.add(mapping(v));
     });
     return emitter;
   };
 }
+
+export const useValueEmitter = <T>(
+  action: (value: T) => void,
+  emitter: ValueEmitter<T>
+): void => {
+  useEffect(() => {
+    const subscription = emitter.onValue(action);
+    return () => {
+      subscription.remove();
+    };
+  }, [emitter, action]);
+};
