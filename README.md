@@ -1,6 +1,15 @@
 # react-native-value-emitter
 
-Value emitters with or without state.
+This package provides two types of value emitters, with or without state.
+
+#ValueEmitter# is based on React Native's EventEmitter and published strongly
+typed values that can be listened to by an app.
+
+#StateValueEmitter# is built on top of #ValueEmitter# and adds state persistency
+so that the current value can always be queried.
+
+#useValueEmitter# is a commodity hook that automatically subscribes to the emitter
+and cancels the subscription when the component is unmounted.
 
 ## Installation
 
