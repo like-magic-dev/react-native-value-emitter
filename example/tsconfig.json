@@ -1,0 +1,8 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "paths": {
+      "react-native-value-emitter": ["./src/index"]
+    }
+  }
+}
