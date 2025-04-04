@@ -1,12 +1,9 @@
-import { multiply } from 'react-native-value-emitter';
-import { Text, View, StyleSheet } from 'react-native';
-
-const result = multiply(3, 7);
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Result: X</Text>
     </View>
   );
 }
@@ -16,5 +13,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'red',
   },
 });
