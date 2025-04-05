@@ -19,7 +19,13 @@ function ValueView() {
   return (
     <>
       <Text style={styles.title}>ValueEmitter</Text>
-      <Text>Value: {value ? value : 'null'}</Text>
+      <Button
+        title="Decrement"
+        onPress={() => {
+          valueEmitter.add((value ?? 0) - 1);
+        }}
+      />
+      <Text>Value: {(value == undefined) ? 'undefined' : value}</Text>
       <Button
         title="Increment"
         onPress={() => {
@@ -40,6 +46,12 @@ function StateValueView() {
   return (
     <>
       <Text style={styles.title}>StateValueEmitter</Text>
+      <Button
+        title="Decrement"
+        onPress={() => {
+          stateValueEmitter.add(value - 1);
+        }}
+      />
       <Text>Value: {value}</Text>
       <Button
         title="Increment"

@@ -2,6 +2,8 @@
 
 This package provides two types of value emitters, with or without state.
 
+![Example app](example.gif)
+
 **ValueEmitter** is based on React Native's EventEmitter and published strongly
 typed values that can be listened to by an app.
 
