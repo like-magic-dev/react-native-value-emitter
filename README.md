@@ -1,17 +1,17 @@
 # react-native-value-emitter
 
-This package provides two types of value emitters, with or without state.
+[![npm version](https://img.shields.io/npm/v/react-native-value-emitter.svg)](https://www.npmjs.com/package/react-native-value-emitter)
+[![license](https://img.shields.io/npm/l/react-native-value-emitter.svg)](./LICENSE)
+
+Strongly typed value emitters for React Native, with a hook to subscribe to them from your components.
 
 ![Example app](example.gif)
 
-**ValueEmitter** is based on React Native's EventEmitter and published strongly
-typed values that can be listened to by an app.
+## Features
 
-**StateValueEmitter** is built on top of **ValueEmitter** and adds state persistency
-so that the current value can always be queried.
-
-**useValueEmitter** is a commodity hook that automatically subscribes to the emitter
-and cancels the subscription when the component is unmounted.
+- **`ValueEmitter<T>`** — a strongly typed emitter built on React Native's `EventEmitter`.
+- **`StateValueEmitter<T>`** — a `ValueEmitter` that also keeps track of its current value, and replays it to new subscribers.
+- **`useValueEmitter`** — a hook that subscribes to an emitter and automatically unsubscribes when the component unmounts.
 
 ## Installation
 
@@ -21,30 +21,69 @@ npm install react-native-value-emitter
 
 ## Usage
 
-```js
-import { StateValueEmitter, ValueEmitter, useValueEmitter, } from 'react-native-value-emitter';
+### ValueEmitter
 
-// Create a value emitter with or without state
+Emits values to listeners, without keeping any state.
+
+```ts
+import { ValueEmitter } from 'react-native-value-emitter';
+
 const valueEmitter = new ValueEmitter<number>();
-const valueEmitter = new StateValueEmitter<number>(1);
 
-// Listen to the value emitter
-const [value, setValue] = useState<number>();
+const subscription = valueEmitter.onValue((value) => {
+  console.log(value);
+});
 
-useValueEmitter((v) => {
-  setValue(v);
-}, valueEmitter);
+valueEmitter.add(1);
+
+subscription.remove();
 ```
 
+### StateValueEmitter
 
-## Contributing
+Like `ValueEmitter`, but keeps the last emitted value around. New subscribers are immediately called with the current value, and it can be read at any time via `.value`.
 
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+```ts
+import { StateValueEmitter } from 'react-native-value-emitter';
+
+const stateValueEmitter = new StateValueEmitter<number>(1);
+
+stateValueEmitter.onValue((value) => {
+  console.log(value); // called immediately with 1
+});
+
+stateValueEmitter.add(2);
+
+console.log(stateValueEmitter.value); // 2
+```
+
+### useValueEmitter
+
+Subscribes a component to an emitter for the lifetime of the component.
+
+```tsx
+import { useState } from 'react';
+import { StateValueEmitter, useValueEmitter } from 'react-native-value-emitter';
+
+const counter = new StateValueEmitter<number>(0);
+
+function Counter() {
+  const [value, setValue] = useState(counter.value);
+
+  useValueEmitter(setValue, counter);
+
+  return <Text>{value}</Text>;
+}
+```
+
+### Mapping emitters
+
+Both emitter types can be derived into a new emitter with `.map()`:
+
+```ts
+const doubled = valueEmitter.map((value) => value * 2);
+```
 
 ## License
 
 MIT
-
----
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
