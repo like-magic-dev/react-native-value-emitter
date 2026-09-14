@@ -71,6 +71,18 @@ export class StateValueEmitter<T> extends ValueEmitter<T> {
   value: T;
 
   /**
+   * Listen for value events. Unlike {@link ValueEmitter.onValue}, the handler is also called
+   * immediately with the current value, so a subscriber never has to separately read `.value`
+   * to learn what it missed before subscribing.
+   * @param handler The handler to call when a value is emitted.
+   * @returns A subscription object that can be used to remove the listener.
+   */
+  onValue: (handler: (v: T) => void) => EmitterSubscription = (handler) => {
+    handler(this.value);
+    return this.addListener('value', handler);
+  };
+
+  /**
    * Map the emitter to a new emitter.
    * @param mapping The mapping function to apply to the emitted values.
    * @returns A new ValueEmitter that emits the mapped value.
