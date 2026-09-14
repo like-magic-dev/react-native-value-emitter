@@ -25,7 +25,7 @@ function ValueView() {
           valueEmitter.add((value ?? 0) - 1);
         }}
       />
-      <Text>Value: {(value == undefined) ? 'undefined' : value}</Text>
+      <Text>Value: {value === undefined ? 'undefined' : value}</Text>
       <Button
         title="Increment"
         onPress={() => {
