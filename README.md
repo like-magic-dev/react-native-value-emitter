@@ -84,6 +84,17 @@ Both emitter types can be derived into a new emitter with `.map()`:
 const doubled = valueEmitter.map((value) => value * 2);
 ```
 
+## Releasing
+
+Releases are cut by hand:
+
+1. Bump `version` in `package.json`.
+2. Add an entry to [CHANGES.md](CHANGES.md).
+3. Commit, e.g. `git commit -am "chore: release x.y.z"`.
+4. Tag it: `git tag x.y.z && git push --tags`.
+5. Publish: `npm publish`.
+6. Create a GitHub release from the tag with the changelog entry as notes.
+
 ## License
 
 MIT
